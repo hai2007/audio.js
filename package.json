@@ -1,0 +1,39 @@
+{
+  "name": "@hai2007/audio",
+  "version": "0.1.0-alpha",
+  "description": "🔇 前端处理音频的核心模块。 ",
+  "main": "dist/audio.min.js",
+  "scripts": {
+    "start": "npm install && npm run dev",
+    "dev": "rollup --config rollup.config.js -i ./src/index.js -o ./dist/quick-paper.js --watch",
+    "build": "hai2007_nodejs -d dist && rollup --config rollup.config.js && terser ./dist/audio.js -o ./dist/audio.min.js && hai2007_nodejs --config script.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hai2007/audio.js.git"
+  },
+  "keywords": [
+    "audio",
+    "core"
+  ],
+  "author": "你好2007",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hai2007/audio.js/issues"
+  },
+  "homepage": "https://github.com/hai2007/audio.js#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@hai2007/nodejs": "^1.0.1",
+    "@rollup/plugin-babel": "^5.2.1",
+    "rollup": "^1.17.0",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "terser": "^4.1.2"
+  },
+  "dependencies": {
+    "@hai2007/algorithm": "^0.3.0",
+    "@hai2007/tool": "^0.9.0"
+  }
+}
