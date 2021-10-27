@@ -39,12 +39,11 @@ npm install --save @hai2007/audio
 
 首先，需要创建一个声音管理对象：
 
-```
+```js
 import AudioJS from '@hai2007/audio'; // 如果是CDN直接使用即可
+
 new AudioJS(arrayBuffer).then(function(audioJS){
-
     // 然后，你就可以使用audioJS处理arrayBuffer记录的这段声音了
-
 });
 ```
 
