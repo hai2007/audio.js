@@ -11,6 +11,41 @@
 
 <body>
 
+  <input type="file" id="source" onchange="doit()" accept="audio/*">
+
+  <script>
+
+    function doit() {
+
+      var file = document.getElementById('source').files[0];
+
+      var reader = new FileReader();
+
+      reader.onload = function () {
+
+        new AudioJS(reader.result).then(function (audioJS) {
+
+          audioJS
+
+            // 提取片段1
+            .extract(10, 20)
+
+            // 提取片段2
+            .extract(40, 50)
+
+            // 播放
+            .play(0);
+
+        });
+
+      };
+
+      reader.readAsArrayBuffer(file);
+
+    }
+
+  </script>
+
 </body>
 
 </html>

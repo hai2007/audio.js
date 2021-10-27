@@ -11,19 +11,34 @@
 
 <body>
 
-  <button onClick='doit()'>
-    打开F12后点击我
-  </button>
+  <input type="file" id="source" onchange="doit()" accept="audio/*">
 
   <script>
 
     function doit() {
 
-      // 获取对象
-      var AudioContext = window.AudioContext || window.webkitAudioContext;
-      var context = new AudioContext();
+      var file = document.getElementById('source').files[0];
 
-      console.log(context);
+      var reader = new FileReader();
+
+      reader.onload = function () {
+
+        // 获取对象
+        var AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+        var context = new AudioContext();
+
+        context.decodeAudioData(reader.result, function (audioBuffer) {
+
+          var source = context.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(context.destination);
+          source.start();
+
+        });
+
+      };
+
+      reader.readAsArrayBuffer(file);
 
     }
 
