@@ -84,6 +84,22 @@ audioJS.extract(beginSecond,endSecond);
 audioJS.play(index);
 ```
 
+- 下载
+
+通过传递一个index来表示下载上面提取的哪个片段，如果什么都不传递，表示下载当前维护的整个声音：
+
+```js
+audioJS.download(index);
+```
+
+- 合并
+
+可以传递至少一个index，表示把传递的坐标对应的内容按照顺序合并后追加到内部的片段记录结尾：
+
+```js
+audioJS.merge(index1,index2,...);
+```
+
 开源协议
 ---------------------------------------
 [MIT](https://github.com/hai2007/audio.js/blob/master/LICENSE)

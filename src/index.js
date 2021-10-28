@@ -1,7 +1,8 @@
 import AudioContext from './polyfill/AudioContext';
+import audiobufferToWav from './tool/audiobuffer-to-wav';
 
 let AudioJS = function (arrayBuffer) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
         // 创建一个audio上下文
         let context = new AudioContext();
@@ -10,6 +11,10 @@ let AudioJS = function (arrayBuffer) {
         context.decodeAudioData(arrayBuffer, function (audioBuffer) {
 
             let extractAudioBuffer = [];
+
+            // 声道数量和采样率
+            let channels = audioBuffer.numberOfChannels;
+            let rate = audioBuffer.sampleRate;
 
             /**
              * AudioBuffer对象是一个音频专用Buffer对象，包含很多音频信息，包括：
@@ -32,10 +37,6 @@ let AudioJS = function (arrayBuffer) {
                 // 提取声音中的一段(单位秒)
                 extract(beginTime, endTime) {
 
-                    // 声道数量和采样率
-                    let channels = audioBuffer.numberOfChannels;
-                    let rate = audioBuffer.sampleRate;
-
                     // 确定截取的边界
                     let startOffset = rate * beginTime;
                     let endOffset = rate * endTime;
@@ -56,16 +57,68 @@ let AudioJS = function (arrayBuffer) {
                         newAudioBuffer.copyToChannel(anotherArray, channel, offset);
                     }
 
-                    extractAudioBuffer.push(newAudioBuffer);
+                    extractAudioBuffer.push({
+                        value: newAudioBuffer,
+
+                        // 帧数
+                        count: frameCount
+                    });
                     return audioJS;
                 },
 
                 // 播放
                 play(index = -1) {
                     let source = context.createBufferSource();
-                    source.buffer = index == -1 ? audioBuffer : extractAudioBuffer[index];
+                    source.buffer = index == -1 ? audioBuffer : extractAudioBuffer[index].value;
                     source.connect(context.destination);
                     source.start();
+                    return audioJS;
+                },
+
+                // 合并（indexs里面记录的是提取的序号）
+                merge(...indexs) {
+
+                    // 先获取需要合并的整个的长度
+                    let allCount = 0;
+                    for (let index of indexs) {
+                        allCount += extractAudioBuffer[index].count;
+                    }
+
+                    // 空的AudioBuffer
+                    let newAudioBuffer = new AudioContext().createBuffer(channels, allCount, rate);
+
+                    let offset = 0;
+                    for (let index of indexs) {
+                        let extractAudio = extractAudioBuffer[index];
+                        let anotherArray = new Float32Array(extractAudio.count);
+                        for (let channel = 0; channel < channels; channel++) {
+                            extractAudio.value.copyFromChannel(anotherArray, channel, 0);
+                            newAudioBuffer.copyToChannel(anotherArray, channel, offset);
+                        }
+                        offset += extractAudio.count;
+                    }
+                    extractAudioBuffer.push({
+                        value: newAudioBuffer,
+
+                        // 帧数
+                        count: allCount
+                    });
+                    return audioJS;
+                },
+
+                // 下载
+                download(index = -1) {
+
+                    // 需要下载的AudioBuffer变成ArrayBuffer
+                    let buffer = audiobufferToWav(index == -1 ? audioBuffer : extractAudioBuffer[index].value, {
+                        sampleRate: rate
+                    });
+
+                    let aNode = document.createElement('a');
+                    aNode.setAttribute('href', URL.createObjectURL(new Blob([buffer])));
+                    aNode.setAttribute('download', 'audio.wav');
+                    aNode.click();
+
                     return audioJS;
                 }
 

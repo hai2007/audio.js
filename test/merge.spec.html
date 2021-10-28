@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合并测试 | 测试</title>
+  <script src="../dist/audio.js"></script>
+</head>
+
+<body>
+
+  <input type="file" id="source" onchange="doit()" accept="audio/*">
+
+  <script>
+
+    function doit() {
+
+      var file = document.getElementById('source').files[0];
+
+      var reader = new FileReader();
+
+      reader.onload = function () {
+
+        new AudioJS(reader.result).then(function (audioJS) {
+
+          audioJS
+
+            // 提取片段1
+            .extract(10, 20)
+
+            // 提取片段2
+            .extract(40, 45)
+
+            // 合并
+            .merge(0, 1)
+
+            // 播放
+            // .play(2)
+
+            // 下载
+            .download(2);
+
+        });
+
+      };
+
+      reader.readAsArrayBuffer(file);
+
+    }
+
+  </script>
+
+</body>
+
+</html>
