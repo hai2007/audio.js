@@ -4,12 +4,12 @@
  *
  * author 你好2007 < https://hai2007.gitee.io/sweethome >
  *
- * version 0.2.0
+ * version 0.2.1
  *
  * Copyright (c) 2021-present hai2007 走一步，再走一步。
  * Released under the MIT license
  *
- * Date:Thu Oct 28 2021 10:40:13 GMT+0800 (中国标准时间)
+ * Date:Thu Oct 28 2021 10:49:09 GMT+0800 (中国标准时间)
  */
 (function () {
   'use strict';
@@ -222,6 +222,11 @@
             aNode.setAttribute('href', URL.createObjectURL(new Blob([buffer])));
             aNode.setAttribute('download', 'audio.wav');
             aNode.click();
+            return audioJS;
+          },
+          // 重置内部维护的片段
+          reset: function reset() {
+            extractAudioBuffer = [];
             return audioJS;
           }
         };

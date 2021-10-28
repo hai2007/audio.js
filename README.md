@@ -100,6 +100,14 @@ audioJS.download(index);
 audioJS.merge(index1,index2,...);
 ```
 
+- 重置
+
+就是把内部维护的片段等信息重新初始化，相当于重新加载当前维护的声音：
+
+```js
+audioJS.reset();
+```
+
 开源协议
 ---------------------------------------
 [MIT](https://github.com/hai2007/audio.js/blob/master/LICENSE)

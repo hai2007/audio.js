@@ -120,6 +120,12 @@ let AudioJS = function (arrayBuffer) {
                     aNode.click();
 
                     return audioJS;
+                },
+
+                // 重置内部维护的片段
+                reset() {
+                    extractAudioBuffer = [];
+                    return audioJS;
                 }
 
             };
