@@ -5,8 +5,8 @@
   "main": "dist/audio.min.js",
   "scripts": {
     "start": "npm install && npm run dev",
-    "dev": "rollup --config rollup.config.js -i ./src/index.js -o ./dist/quick-paper.js --watch",
-    "build": "hai2007_nodejs -d dist && rollup --config rollup.config.js && terser ./dist/audio.js -o ./dist/audio.min.js && hai2007_nodejs --config script.config.js"
+    "dev": "rollup --config rollup.config.js -i ./src/index.js -o ./dist/audio.js --watch",
+    "build": "nodejs -d dist && rollup --config rollup.config.js && terser ./dist/audio.js -o ./dist/audio.min.js && nodejs --config nodejs.config.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@hai2007/nodejs": "^1.0.1",
+    "@hai2007/nodejs": "^2.0.1",
     "@rollup/plugin-babel": "^5.2.1",
     "rollup": "^1.17.0",
     "rollup-plugin-commonjs": "^10.0.1",
